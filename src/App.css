@@ -66,7 +66,7 @@ span.opened{
   background:#777;
 }
 
-span.checked,span.checked:hover{
+span.flag, span.flag:hover{
 background: yellow;
 }
 
@@ -75,7 +75,6 @@ span.bomb{
   width:10px;
   height:10px;
   margin-top:4px;
-  border:1px solid black;
   border-radius:50%;
   background: red;
 }

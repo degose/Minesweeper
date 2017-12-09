@@ -4,8 +4,8 @@ import update from 'react-addons-update';
 
 const initialState = {
   spanArray: [],
-  mines: 10,
-  opened: null
+  // mines: 10,
+  // opened: null
 };
 
 
@@ -16,8 +16,10 @@ export default function createMine(state = initialState, action) {
         'spanArray': {$set: action.payload},
       })
 
-    case actions.CREATE_NUMBER:
-      return action.payload;
+    case actions.RESET_GAME:
+      return update(state, {
+        'spanArray': {$set: action.payload},
+      })
 
       default:
         return state;

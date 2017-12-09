@@ -8,7 +8,7 @@ class GameHeader extends Component {
           지뢰 갯수 : {this.props.Mines}
         </div>
         <div>
-          <button type="button">리셋 버튼</button>
+          <button type="button" onClick={this.props.handleCreateMines}>리셋 버튼</button>
         </div>
         {/* <div>
           게임 시간 : 
