@@ -5,14 +5,14 @@ class GameHeader extends Component {
     return (
       <div>
         <div>
-          지뢰 갯수 : 
+          지뢰 갯수 : {this.props.Mines}
         </div>
         <div>
           <button type="button">리셋 버튼</button>
         </div>
-        <div>
+        {/* <div>
           게임 시간 : 
-        </div>
+        </div> */}
       </div>
     )
   }

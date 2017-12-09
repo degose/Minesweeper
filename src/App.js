@@ -1,9 +1,13 @@
 import React, { Component } from 'react';
 import './App.css';
 import Game from './component/game';
-import Ranking from './component/ranking';
+// import Ranking from './component/ranking';
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+  }
+  
   render() {
     return (
       <div className="App">
@@ -11,7 +15,7 @@ class App extends Component {
           <h1 className="App-title">Minesweeper Project</h1>
         </header>
         <Game />
-        <Ranking />
+        {/* <Ranking /> */}
       </div>
     );
   }
