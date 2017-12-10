@@ -1,16 +1,28 @@
 import React, { Component } from 'react';
+import Box from './box';
 
 class GameArea extends Component {
   constructor(props) {
     super(props);
+
+    // 컴포넌트 내부 state 정의
+    // this.state = {
+    //   col: 8,
+    //   row: 8,
+    //   mines: 10,
+    //   spanArray: [],
+    //   opened: 0,
+    // }
   }
 
   renderList() {
     let spans = this.props.RandomeSpanArray;
     // console.log('spans',spans);
+    // let value = isOpen ? isMine ? '☉' : mineCount ? mineCount : '' : isFlagged ? '⚑' : '';
+    let value = '';
     return spans.map((row, rowIndex) => row.map((random, randomIndex) => {
       return (
-        <span 
+        <div 
           id={`${rowIndex}${randomIndex}`} 
           data-row={rowIndex} 
           data-col={randomIndex} 
@@ -18,8 +30,11 @@ class GameArea extends Component {
           className='box first' 
           key={`${rowIndex}${randomIndex}`} 
           onClick={(event) => this.handleBox(event)}
-          onContextMenu={(event) => this.handleFlag(event)}>
-        </span>
+          onContextMenu={(event) => this.handleFlag(event)}
+          >
+          { value }
+          {/* <Box /> */}
+        </div>
       );
     }))
   }
@@ -32,8 +47,10 @@ class GameArea extends Component {
     let item = e.target;
     if(item.classList.contains('flag')) {
       item.classList.remove('flag');
+      this.props.handleDeleteFlag();
     } else {
       item.classList.add('flag');
+      this.props.handleCreateFlag();
     }
     // 여기서 mines 의 숫자를 하나씩 빼줘야함
   }

@@ -4,6 +4,7 @@ import * as actions from '../actions';
 
 import GameHeader from './game-header';
 import GameArea from './game-area';
+import PopUp from './pop-up';
 
 // const col = 8;
 // const row = 8;
@@ -29,6 +30,7 @@ class Game extends Component {
     this.setRandomMines();
   }
 
+  // 각 row, col 값이 undefined인지 확인
   spanValue(row,col){
     if(this.state.spanArray[row] === undefined || this.state.spanArray[row][col] === undefined){
       return 'unValue';
@@ -156,7 +158,12 @@ class Game extends Component {
       <section>
         <h2>게임영역</h2>
         <GameHeader Mines={this.props.mines} onCreateMines={this.props.handleCreateMines} />
-        <GameArea RandomeSpanArray={this.props.spanArray}/>
+        <GameArea 
+          RandomeSpanArray={this.props.spanArray}
+          handleCreateFlag={this.props.handleCreateFlag}
+          handleDeleteFlag={this.props.handleDeleteFlag}
+        />
+        <PopUp />
       </section>
     )
   }
@@ -165,13 +172,16 @@ class Game extends Component {
 const mapStateToProps = (state) => {
   return {
     spanArray: state.Mines.spanArray,
-    mines: state.Span.mineCount
+    mines: state.Span.mineCount,
+    isFlag: state.Span.isFlag
   };
 };
 
 const mapDispatchProps = (dispatch) => {
   return {
-    handleCreateMines: (spanArray) => { dispatch(actions.createMine(spanArray))}
+    handleCreateMines: (spanArray) => { dispatch(actions.createMine(spanArray))},
+    handleCreateFlag: () => { dispatch(actions.createFlag())},
+    handleDeleteFlag: () => { dispatch(actions.deleteFlag())}
   };
 };
 

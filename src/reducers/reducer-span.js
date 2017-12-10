@@ -8,7 +8,8 @@ const initialState = {
   isFlag: null,
   isBomb: null,
   isNumber: null,
-  isOpen: null
+  isOpen: null,
+  spanBtn: null
 };
 
 
@@ -18,6 +19,7 @@ export default function clickSpan(state = initialState, action) {
     case actions.CREATE_FLAG:
       return update(state, {
         'isFlag': {$set: action.payload},
+        // 'spanBtn': {$set: '<span className="flag"></span>'},
         'mineCount': {$set: action.mineCount--}
       })
 
