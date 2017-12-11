@@ -4,9 +4,6 @@ import update from 'react-addons-update';
 
 const initialState = {
   spanArray: [],
-  // spans: {}
-  // mines: 10,
-  // opened: null
 };
 
 

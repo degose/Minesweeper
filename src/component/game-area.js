@@ -4,7 +4,6 @@ import * as actions from '../actions';
 import PropTypes from 'prop-types';
 import update from 'react-addons-update';
 
-// import Box from './box';
 
 let array = [];
 
@@ -13,6 +12,8 @@ class GameArea extends Component {
     super(props);
     this.setRandomMines = this.setRandomMines.bind(this);
     this.handleFlag = this.handleFlag.bind(this);
+    this.handleBox = this.handleBox.bind(this);
+    this.expansionSpan = this.expansionSpan.bind(this);
 
     // 컴포넌트 내부 state 정의
     this.state = {
@@ -95,7 +96,7 @@ class GameArea extends Component {
   }
 
   // 빈 span 클릭시 확장
-  floodFill(row,col){
+  expansionSpan(row,col){
     let item = document.getElementById(`${row}${col}`);
     let id = item.id;
     let itemVal = item.dataset.val;
@@ -103,28 +104,25 @@ class GameArea extends Component {
     if(item.classList.contains('first')){
       item.classList.remove('first');
 
-      if(this.props.spans[id].text === '⚑'){
-        this.props.handleDeleteFlag(id);
-      }
+      // if(this.props.spans[id].text === '⚑'){
+      //   this.props.handleDeleteFlag(id);
+      // }
 
       if(this.state.spanArray[row][col] > 0){
         this.props.handleClickNumber(id,itemVal);
 
       } else {
         this.props.handleClickEmpty(id);
+        console.log('this.props.spans[id].classList',this.props.spans[id].classList)
       }
-    
+      
       if(this.state.spanArray[row][col] === 0){
         for(let ii=-1; ii<=1; ii++){
-          // -1, 0, 1
           for(let jj=-1; jj<=1; jj++){
             if(ii!==0 || jj!==0){
-              console.log('여긴뭐냐',this.spanValue(row+ii,col+jj))
               if(this.spanValue(row+ii,col+jj) !== 9){
-                console.log('여기까지는 왔니')
-                if(this.spanValue(row+ii,col+jj) != 'unValue'){
-                  this.floodFill(row+ii,col+jj);
-                  console.log('재귀함수')
+                if(this.spanValue(row+ii,col+jj) !== 'unValue'){
+                  this.expansionSpan(row+ii,col+jj);
                 }
               }
             }
@@ -132,12 +130,9 @@ class GameArea extends Component {
         }
       }
     }
-  }
 
-  checkopened(){
-    console.log('opened:',this.state.opened);
-    if(this.state.opened >= 54){
-
+    if (this.props.opened >= 53) {
+      this.props.handelFinishGame();
     }
   }
 
@@ -157,23 +152,27 @@ class GameArea extends Component {
   handleBox(e) {
     let item = e.target;
     let id = e.target.id;
-    let dataRow = item.dataset.row;
-    let dataCol = item.dataset.col;
-    let itemVal = item.dataset.val;
+    let dataRow = parseInt(item.dataset.row, 10);
+    let dataCol = parseInt(item.dataset.col, 10);
+    let itemVal = parseInt(item.dataset.val, 10);
 
     if(this.props.spans[id].text !== '⚑') {
-      if(itemVal === '0') {
+      if(itemVal === 0) {
         // this.props.handleClickEmpty(id);
-        this.floodFill(dataRow, dataCol);
+        this.expansionSpan(dataRow, dataCol);
       }
 
       if(itemVal > 0 && itemVal < 9) {
         this.props.handleClickNumber(id,itemVal);
       }
 
-      if(itemVal === '9') {
+      if(itemVal === 9) {
         this.props.handelGameOver(id);
       }
+    }
+
+    if (this.props.opened >= 53) {
+      this.props.handelFinishGame();
     }
   }
 
@@ -198,6 +197,7 @@ class GameArea extends Component {
   }
 
   render(){
+    // console.log('opened', this.props.opened)
     return (
       <div id="container">
         {this.renderList()}
@@ -207,19 +207,16 @@ class GameArea extends Component {
 }
 
 GameArea.propTypes = {
-  // handleCreateMines: PropTypes.func.isRequired,
+  handleCreateMines: PropTypes.func.isRequired,
   handleCreateFlag: PropTypes.func,
   handleDeleteFlag: PropTypes.func,
   spanArray: PropTypes.array,
-  // spans: PropTypes.arrayOf(PropTypes.shape({
-  //   classList: PropTypes.string.isRequired,
-  // }).isRequired).isRequired
 };
 
 const mapStateToProps = (state) => {
   return {
     spanArray: state.Mines.spanArray,
-    spans: state.Span,
+    spans: state.Span.spans,
     opened: state.Span.opened,
     // mines: state.Span.mines
   };
@@ -234,9 +231,9 @@ const mapDispatchProps = (dispatch) => {
     handleClickNumber: (id,num) => { dispatch(actions.clickNumber(id,num))},
     handleClickEmpty: (id) => { dispatch(actions.clickEmpty(id))},
     handelGameOver: (id) => { dispatch(actions.gameOver(id))},
+    handelFinishGame: () => { dispatch(actions.finishGame())},
   };
 };
 
 export default connect(mapStateToProps, mapDispatchProps)(GameArea);
 
-// export default GameArea;

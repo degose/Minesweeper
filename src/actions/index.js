@@ -59,10 +59,9 @@ export function gameOver(id) {
   };
 }
 
-export function finishGame(num) {
+export function finishGame() {
   return {
     type: FINISH_GAME,
-    payload: num
   };
 }
 

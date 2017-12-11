@@ -1,21 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-// import * as actions from '../actions';
+import * as actions from '../actions';
 
 import GameHeader from './game-header';
 import GameArea from './game-area';
 import PopUp from './pop-up';
 
 class Game extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render(){
+    // console.log('this.props.mines::',this.props.mines)
+    // console.log('popupText::',this.props.popupText)
     return (
       <section>
-        <h2>게임영역</h2>
-        <GameHeader mines={this.props.mines} opened={this.props.opened}/>
+        <GameHeader mines={this.props.mines} opened={this.props.opened} handleCreateMines={this.props.handleCreateMines}/>
         <GameArea />
         <PopUp popupText={this.props.popupText}/>
       </section>
@@ -36,7 +37,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchProps = (dispatch) => {
   return {
-    // handleCreateMines: (spanArray) => { dispatch(actions.createMine(spanArray))},
+    handleCreateMines: (spanArray) => { dispatch(actions.createMine(spanArray))},
     // handleCreateFlag: () => { dispatch(actions.createFlag())},
     // handleDeleteFlag: () => { dispatch(actions.deleteFlag())}
   };

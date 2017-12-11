@@ -1,17 +1,31 @@
 import React, { Component } from 'react';
 
 class PopUp extends Component {
-  constructor(props) {
-    super(props);
-  }
+  // constructor(props) {
+  //   super(props);
+  // }
 
   render(){
-    return (
+    const popUpText = this.props.popupText;
+    let popUpContainer = null;
+    if (popUpText !== '') {
+      // popUpText가 있어야 보여지게 하기
+      popUpContainer = 
       <div className="popup-container">
-        popup
         <a>
-          {this.props.popupText}
+          {popUpText}
         </a>
+      </div>
+    }
+    
+    return (
+      <div>
+        {popUpContainer}
+        {/* <div className="popup-container">
+          <a>
+            {popUpText}
+          </a>
+        </div> */}
       </div>
     )
   }
