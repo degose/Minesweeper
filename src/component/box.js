@@ -1,39 +1,40 @@
 import React, { Component } from 'react';
 
 class Box extends Component {
-  constructor(props) {
-    super(props);
+
+  handleFlag(e) {
+    e.preventDefault();
+    console.log('handleFlag',e.target.classList);
+    // console.log('attributes',e.target.attributes);
+    // console.log('dataset',e.target.dataset.col);
+    let item = e.target;
+    if(item.classList.contains('flag')) {
+      item.classList.remove('flag');
+      // this.props.handleDeleteFlag();
+    } else {
+      item.classList.add('flag');
+      // this.props.handleCreateFlag();
+    }
+    // 여기서 mines 의 숫자를 하나씩 빼줘야함
   }
 
-  // renderList() {
-  //   let spans = this.props.RandomeSpanArray;
-  //   // console.log('spans',spans);
-  //   // let value = isOpen ? isMine ? '☉' : mineCount ? mineCount : '' : isFlagged ? '⚑' : '';
-  //   let value = '';
-  //   return spans.map((row, rowIndex) => row.map((random, randomIndex) => {
-  //     return (
-  //       <span 
-  //         id={`${rowIndex}${randomIndex}`} 
-  //         data-row={rowIndex} 
-  //         data-col={randomIndex} 
-  //         data-val={random}
-  //         className='box first' 
-  //         key={`${rowIndex}${randomIndex}`} 
-  //         onClick={(event) => this.handleBox(event)}
-  //         onContextMenu={(event) => this.handleFlag(event)}
-  //         >
-  //         {/* { value } */}
-  //         <Tile />
-  //       </span>
-  //     );
-  //   }))
-  // }
-
+  test(e) {
+    console.log('되냐',e.target);
+  }
 
   render(){
     return (
-      <span id="container">
-        0
+      <span 
+        // id={this.props.id}
+        // data-row={this.props.dataRow} 
+        // data-col={this.props.dataCol} 
+        // data-val={this.props.dataVal}
+        // // onClick={(event) => this.handleBox(event)}
+        // onClick={(e) => this.test(e)}
+        // onContextMenu={this.props.onCreateFlag}
+      >
+        {/* {this.props.showSpanText} */}
+        {/* {this.props.dataVal} */}
       </span>
     )
   }

@@ -3,56 +3,59 @@ import update from 'react-addons-update';
 
 
 const initialState = {
-  mineCount: 10,
-  opened: null,
-  isFlag: null,
-  isBomb: null,
-  isNumber: null,
-  isOpen: null,
-  spanBtn: null
+  // spans : {}
+  opened: 0,
+  popupText: '',
+  mines: 10
 };
 
 
-export default function clickSpan(state = initialState, action) {
+export default function stateSpan(state = initialState, action) {
   switch (action.type) {
+
+    // span obj create
+    case actions.CREATE_SPANS:
+      return action.payload
+
     // 깃발 추가
     case actions.CREATE_FLAG:
       return update(state, {
-        'isFlag': {$set: action.payload},
-        // 'spanBtn': {$set: '<span className="flag"></span>'},
-        'mineCount': {$set: action.mineCount--}
+        [action.id]: {$set: {text: '⚑', classList: 'box'}},
       })
 
     // 깃발 제거
     case actions.DELETE_FLAG:
       return update(state, {
-        'isFlag': {$set: action.payload},
-        'mineCount': {$set: action.mineCount++}
+        [action.id]: {$set: {text: '', classList: 'box'}},
+      })
+
+    // 숫자를 눌렀을 때 -> 숫자 표시
+    case actions.CLICK_NUMBER:
+      return update(state, {
+        [action.id]: {$set: {text: action.num, classList: 'box'}},
+        // 'opened': {$set: opened++},
+      })
+    
+    // 빈곳(0)을 눌렀을 때 -> 확장
+    case actions.CLICK_EMPTY:
+      // console.log(state[action.id].classList)
+      return update(state, {
+        [action.id]: {$set: {classList: 'box opened'}},
       })
 
     // 지뢰(9)를 눌렀을 때
     case actions.GAME_OVER:
       return update(state, {
-        'isBomb': {$set: action.payload},
+        [action.id]: {$set: {text: '☉', classList: 'box'}},
+        'popupText': {$set: '지뢰 발견! 다시 시작하기'},
       })
     
-    // 모든 지뢰에 깃발을 꼽고 모든 span을 눌렀을 때
+    // 모든 지뢰에 깃발을 꼽고 모든 span이 열리면
     case actions.FINISH_GAME:
       return update(state, {
-        'opened': {$set: action.payload},
+        'popupText': {$set: '게임 완료! 다시 시작하기'},
       })
     
-    // 숫자를 눌렀을 때 -> 숫자 표시
-    case actions.CLICK_NUMBER:
-      return update(state, {
-        'isNumber': {$set: action.payload},
-      })
-    
-    // 빈곳(0)을 눌렀을 때 -> 확장
-    case actions.CLICK_EMPTY:
-      return update(state, {
-        'isOpen': {$set: action.payload},
-      })
 
       default:
         return state;

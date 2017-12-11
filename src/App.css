@@ -62,11 +62,11 @@ h4{
   background:#777;
 }
 
-span.opened{
+.opened{
   background:#777;
 }
 
-span.flag, span.flag:hover{
+.flag,.flag:hover{
 background: yellow ;
 }
 

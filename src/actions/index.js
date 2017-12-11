@@ -1,5 +1,6 @@
 // action type 정의
 export const CREATE_MINE = 'CREATE_MINE';
+export const CREATE_SPANS = 'CREATE_SPANS';
 export const CREATE_FLAG = 'CREATE_FLAG';
 export const DELETE_FLAG = 'DELETE_FLAG';
 export const CLICK_NUMBER = 'CLICK_NUMBER';
@@ -15,38 +16,46 @@ export function createMine(spanArray) {
   };
 }
 
-export function createFlag() {
+export function createSpans(obj) {
+  return {
+    type: CREATE_SPANS,
+    payload: obj
+  };
+}
+
+export function createFlag(id) {
   return {
     type: CREATE_FLAG,
-    payload: true
+    id
   };
 }
 
-export function deleteFlag() {
+export function deleteFlag(id) {
   return {
     type: DELETE_FLAG,
-    payload: false
+    id
   };
 }
 
-export function clickNumber(num) {
+export function clickNumber(id,num) {
   return {
     type: CLICK_NUMBER,
-    payload: num
+    id,
+    num
   };
 }
 
-export function clickEmpty(num) {
+export function clickEmpty(id) {
   return {
     type: CLICK_EMPTY,
-    payload: num
+    id
   };
 }
 
-export function gameOver(num) {
+export function gameOver(id) {
   return {
     type: GAME_OVER,
-    payload: num
+    id
   };
 }
 
