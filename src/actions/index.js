@@ -7,7 +7,6 @@ export const CLICK_NUMBER = 'CLICK_NUMBER';
 export const CLICK_EMPTY = 'CLICK_EMPTY';
 export const GAME_OVER = 'GAME_OVER';
 export const FINISH_GAME = 'FINISH_GAME';
-export const RESET_GAME = 'RESET_GAME';
 
 export function createMine(spanArray) {
   return {
@@ -62,13 +61,6 @@ export function gameOver(id) {
 export function finishGame() {
   return {
     type: FINISH_GAME,
-  };
-}
-
-export function resetGame() {
-  return {
-    type: RESET_GAME,
-    payload: true
   };
 }
 

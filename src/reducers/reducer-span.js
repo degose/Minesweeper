@@ -16,10 +16,12 @@ export default function stateSpan(state = initialState, action) {
     // span obj create
     case actions.CREATE_SPANS:
       return update(state, {
-        spans: {$set: action.payload},
+        'spans': {$set: action.payload},
+        'popupText': {$set: ''},
+        'opened': {$set: 0},
+        'mines': {$set: 10},
       })
       
-
     // 깃발 추가
     case actions.CREATE_FLAG:
       return update(state, {
@@ -33,7 +35,7 @@ export default function stateSpan(state = initialState, action) {
     case actions.DELETE_FLAG:
       return update(state, {
         'spans': {
-          [action.id]: {$set: {text: '', classList: 'box'}}
+          [action.id]: {$set: {text: '', classList: 'box first'}}
         },
         'mines': {$set: ++state.mines}
       })
@@ -56,21 +58,21 @@ export default function stateSpan(state = initialState, action) {
         'opened': {$set: ++state.opened}
       })
 
-    // 지뢰(9)를 눌렀을 때
+    // 지뢰(9)를 눌렀을 때 -> 팝업창이 뜸
     case actions.GAME_OVER:
       return update(state, {
         'spans': {
-          [action.id]: {$set: {text: '☉', classList: 'box'}},
+          [action.id]: {$set: {text: '⊗', classList: 'box'}},
         },
         'popupText': {$set: '지뢰 발견! 다시 시작하기'},
+        'mines': {$set: --state.mines}
       })
     
-    // 모든 지뢰에 깃발을 꼽고 모든 span이 열리면
+    // 모든 지뢰에 깃발을 꼽고 모든 span이 열리면 -> 팝업창이 뜸
     case actions.FINISH_GAME:
       return update(state, {
         'popupText': {$set: '게임 완료! 다시 시작하기'},
       })
-    
 
       default:
         return state;

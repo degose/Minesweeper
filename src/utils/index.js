@@ -27,7 +27,6 @@ export function setRandomMines() {
       }
     }
   }
-  // this.props.handleCreateSpans(obj);
 
   // 랜덤숫자를 [row][col]에 넣어 spanArray에 mines 넣기
   let placedMines = 0;

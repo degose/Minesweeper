@@ -1,27 +1,36 @@
-import React, { Component } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
-class PopUp extends Component {
+const PopUp = ({popupText, handleCreateMines, handleCreateSpans}) => {
+  let popUpContainer = null;
 
-  render(){
-    const popUpText = this.props.popupText;
-    let popUpContainer = null;
-    if (popUpText !== '') {
-      
-      // popUpText가 있어야 보여지게 하기
-      popUpContainer = 
-      <div className="popup-container">
-        <a>
-          {popUpText}
-        </a>
-      </div>
-    }
-    
-    return (
-      <div>
-        {popUpContainer}
-      </div>
-    )
+  // popUpText가 있어야 보여지게 하기
+  if (popupText !== '') {
+    popUpContainer = 
+    <div className="popup-container">
+      <a onClick={() => {handleCreateMines(); handleCreateSpans();}}>
+        {popupText}
+      </a>
+    </div>
   }
-}
+  
+  return (
+    <div>
+      {popUpContainer}
+    </div>
+  )
+};
+
+PopUp.propTypes = {
+  popupText: PropTypes.string,
+  handleCreateMines: PropTypes.func,
+  handleCreateSpans: PropTypes.func,
+};
+
+PopUp.defaultProps = {
+  popupText: '',
+  handleCreateMines: () => console.warn('handleCreateMines not defined'),
+  handleCreateSpans: () => console.warn('handleCreateSpans not defined')
+};
 
 export default PopUp;

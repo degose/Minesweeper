@@ -15,11 +15,6 @@ export default function createMine(state = initialState, action) {
         'spanArray': {$set: action.payload},
       })
 
-    case actions.RESET_GAME:
-      return update(state, {
-        'spanArray': {$set: action.payload},
-      })
-
       default:
         return state;
   }

@@ -4,8 +4,6 @@ import * as actions from '../actions';
 import PropTypes from 'prop-types';
 import { spanValue } from '../utils';
 
-
-
 class GameArea extends Component {
   constructor(props) {
     super(props);
@@ -21,9 +19,8 @@ class GameArea extends Component {
     let id = item.id;
     let itemVal = item.dataset.val;
 
-    // if(this.props.spans[id].classList === 'box first'){
-      // item.classList.remove('first');
     if(item.classList.contains('first')){
+      // class first는 초기 생성된 span인지 아닌지 조건
       item.classList.remove('first');
 
       if(this.props.spanArray[row][col] > 0){
@@ -71,7 +68,9 @@ class GameArea extends Component {
     let dataCol = parseInt(item.dataset.col, 10);
     let itemVal = parseInt(item.dataset.val, 10);
 
-    if(this.props.spans[id].text !== '⚑') {
+    if(this.props.spans[id].text !== '⚑' && item.classList.contains('first')) {
+      // 숫자인 span을 계속 누르면 opened가 올라가는 이슈를 해결하기 위해서 first 인지 아닌지를 넣어줌
+
       if(itemVal === 0) {
         this.expansionSpan(dataRow, dataCol);
       }
@@ -85,18 +84,16 @@ class GameArea extends Component {
       }
     }
 
-    if (this.props.opened >= 53) {
+    if(this.props.opened >= 53) {
       this.props.handelFinishGame();
     }
   }
 
   renderList() {
     let spans = this.props.spanArray;
-    // console.log('spanArray:',this.props.spanArray);
-    // console.log('obj:',this.props.spans);
     return spans.map((row, rowIndex) => row.map((random, colIndex) => {
       return (
-        <div 
+        <span 
           id={`${rowIndex}${colIndex}`} 
           data-row={rowIndex} 
           data-col={colIndex} 
@@ -107,7 +104,7 @@ class GameArea extends Component {
           onContextMenu={(event) => {event.preventDefault(); this.handleFlag(event);}}
           >
           {this.props.spans[`${rowIndex}${colIndex}`].text}
-        </div>
+        </span>
       );
     }))
   }
@@ -122,10 +119,27 @@ class GameArea extends Component {
 }
 
 GameArea.propTypes = {
-  // handleCreateMines: PropTypes.func.isRequired,
+  opened: PropTypes.number,
+  spans: PropTypes.object,
+  spanArray: PropTypes.array,
   handleCreateFlag: PropTypes.func,
   handleDeleteFlag: PropTypes.func,
-  spanArray: PropTypes.array,
+  handleClickNumber: PropTypes.func,
+  handleClickEmpty: PropTypes.func,
+  handelGameOver: PropTypes.func,
+  handelFinishGame: PropTypes.func,
+};
+
+GameArea.defaultProps = {
+  opened: 0,
+  spans: {},
+  spanArray: [],
+  handleCreateFlag: () => console.warn('handleCreateFlag not defined'),
+  handleDeleteFlag: () => console.warn('handleDeleteFlag not defined'),
+  handleClickNumber: () => console.warn('handleClickNumber not defined'),
+  handleClickEmpty: () => console.warn('handleClickEmpty not defined'),
+  handelGameOver: () => console.warn('handelGameOver not defined'),
+  handelFinishGame: () => console.warn('handelFinishGame not defined'),
 };
 
 const mapStateToProps = (state) => {
@@ -133,14 +147,11 @@ const mapStateToProps = (state) => {
     spanArray: state.Mines.spanArray,
     spans: state.Span.spans,
     opened: state.Span.opened,
-    // mines: state.Span.mines
   };
 };
 
 const mapDispatchProps = (dispatch) => {
   return {
-    // handleCreateMines: (spanArray) => { dispatch(actions.createMine(spanArray))},
-    // handleCreateSpans: (obj) => { dispatch(actions.createSpans(obj) )},
     handleCreateFlag: (id) => { dispatch(actions.createFlag(id))},
     handleDeleteFlag: (id) => { dispatch(actions.deleteFlag(id))},
     handleClickNumber: (id,num) => { dispatch(actions.clickNumber(id,num))},

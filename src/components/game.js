@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import { setRandomMines } from '../utils';
+import PropTypes from 'prop-types';
 
 import GameHeader from './game-header';
 import GameArea from './game-area';
@@ -18,25 +19,37 @@ class Game extends Component {
       <section>
         <GameHeader mines={this.props.mines} opened={this.props.opened} handleCreateMines={this.props.handleCreateMines} handleCreateSpans={this.props.handleCreateSpans}/>
         <GameArea />
-        <PopUp popupText={this.props.popupText}/>
+        <PopUp popupText={this.props.popupText} handleCreateMines={this.props.handleCreateMines} handleCreateSpans={this.props.handleCreateSpans}/>
       </section>
     )
   }
 }
+
+Game.propTypes = {
+  mines: PropTypes.number,
+  opened: PropTypes.number,
+  popupText: PropTypes.string,
+  handleCreateMines: PropTypes.func,
+  handleCreateSpans: PropTypes.func,
+};
+
+Game.defaultProps = {
+  mines: 10,
+  opened: 0,
+  popupText: '',
+  handleCreateMines: () => console.warn('handleCreateMines not defined'),
+  handleCreateSpans: () => console.warn('handleCreateSpans not defined')
+};
 
 const mapStateToProps = (state) => {
   return {
     mines: state.Span.mines,
     opened: state.Span.opened,
     popupText: state.Span.popupText
-    // spanArray: state.Mines.spanArray,
-    // mines: state.Span.mineCount,
-    // isFlag: state.Span.isFlag
   };
 };
 
 const mapDispatchProps = (dispatch) => {
-  // const spanArrays = setRandomMines();
   return {
     handleCreateMines: () => { 
       const spanArrays = setRandomMines();
