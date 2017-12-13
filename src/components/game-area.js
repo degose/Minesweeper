@@ -11,6 +11,8 @@ class GameArea extends Component {
     this.handleFlag = this.handleFlag.bind(this);
     this.handleBox = this.handleBox.bind(this);
     this.expansionSpan = this.expansionSpan.bind(this);
+    this.startGameTime = this.startGameTime.bind(this);
+    this.renderList = this.renderList.bind(this);
   }
 
   // 빈 span 클릭시 확장
@@ -44,7 +46,7 @@ class GameArea extends Component {
     }
 
     if (this.props.opened >= 53) {
-      this.props.handelFinishGame();
+      this.props.handleFinishGame();
     }
   }
 
@@ -60,6 +62,19 @@ class GameArea extends Component {
     }
   }
 
+  startGameTime() {
+    // setInterval 콜백 함수 안에서 this가 전역을 가리켜서 this를 that으로 할당
+    let that = this;
+    let interval = setInterval(function(){
+      that.props.handleStartTime();
+
+      if (that.props.opened >= 53 || that.props.isStopGame === true || that.props.againTime === true) {
+        clearInterval(interval);
+        console.log('끝')
+      }
+    }, 1000);
+  }
+
   // click box
   handleBox(e) {
     let item = e.target;
@@ -68,8 +83,13 @@ class GameArea extends Component {
     let dataCol = parseInt(item.dataset.col, 10);
     let itemVal = parseInt(item.dataset.val, 10);
 
+    // time 숫자 - 시작 첫 span을 눌렀을 때만 실행되야 하기 때문에 조건문을 줘야함
+    // handleStartTime이 실행되면 isFirstTime 이 false가 되기 때문에 다시 span을 눌러도 재실행 되지 않게끔 막는다.
+    if(this.props.isFirstTime === true){
+      this.startGameTime();
+    }
+
     if(this.props.spans[id].text !== '⚑' && item.classList.contains('first')) {
-      // 숫자인 span을 계속 누르면 opened가 올라가는 이슈를 해결하기 위해서 first 인지 아닌지를 넣어줌
 
       if(itemVal === 0) {
         this.expansionSpan(dataRow, dataCol);
@@ -80,16 +100,17 @@ class GameArea extends Component {
       }
 
       if(itemVal === 9) {
-        this.props.handelGameOver(id);
+        this.props.handleGameOver(id);
       }
     }
 
     if(this.props.opened >= 53) {
-      this.props.handelFinishGame();
+      this.props.handleFinishGame();
     }
   }
 
   renderList() {
+    console.log('다시시작:::', this.props.isFirstTime);
     let spans = this.props.spanArray;
     return spans.map((row, rowIndex) => row.map((random, colIndex) => {
       return (
@@ -126,8 +147,8 @@ GameArea.propTypes = {
   handleDeleteFlag: PropTypes.func,
   handleClickNumber: PropTypes.func,
   handleClickEmpty: PropTypes.func,
-  handelGameOver: PropTypes.func,
-  handelFinishGame: PropTypes.func,
+  handleGameOver: PropTypes.func,
+  handleFinishGame: PropTypes.func,
 };
 
 GameArea.defaultProps = {
@@ -138,15 +159,18 @@ GameArea.defaultProps = {
   handleDeleteFlag: () => console.warn('handleDeleteFlag not defined'),
   handleClickNumber: () => console.warn('handleClickNumber not defined'),
   handleClickEmpty: () => console.warn('handleClickEmpty not defined'),
-  handelGameOver: () => console.warn('handelGameOver not defined'),
-  handelFinishGame: () => console.warn('handelFinishGame not defined'),
+  handleGameOver: () => console.warn('handelGameOver not defined'),
+  handleFinishGame: () => console.warn('handelFinishGame not defined'),
 };
 
 const mapStateToProps = (state) => {
   return {
-    spanArray: state.Mines.spanArray,
+    spanArray: state.Span.spanArray,
     spans: state.Span.spans,
     opened: state.Span.opened,
+    isStopGame: state.Span.isStopGame,
+    isFirstTime: state.Span.isFirstTime,
+    againTime: state.Span.againTime,
   };
 };
 
@@ -156,8 +180,9 @@ const mapDispatchProps = (dispatch) => {
     handleDeleteFlag: (id) => { dispatch(actions.deleteFlag(id))},
     handleClickNumber: (id,num) => { dispatch(actions.clickNumber(id,num))},
     handleClickEmpty: (id) => { dispatch(actions.clickEmpty(id))},
-    handelGameOver: (id) => { dispatch(actions.gameOver(id))},
-    handelFinishGame: () => { dispatch(actions.finishGame())},
+    handleGameOver: (id) => { dispatch(actions.gameOver(id))},
+    handleFinishGame: () => { dispatch(actions.finishGame())},
+    handleStartTime: () => { dispatch(actions.startTime())},
   };
 };
 

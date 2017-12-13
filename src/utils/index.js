@@ -23,7 +23,8 @@ export function setRandomMines() {
       array[i].push(0);
       obj[i + '' + j] = {
         text: '',
-        classList: 'box first'
+        classList: 'box first',
+        // isFirst: true,
       }
     }
   }

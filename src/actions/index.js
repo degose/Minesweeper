@@ -1,24 +1,27 @@
 // action type 정의
 export const CREATE_MINE = 'CREATE_MINE';
-export const CREATE_SPANS = 'CREATE_SPANS';
+export const RESTART_GAME = 'RESTART_GAME';
+// export const CREATE_SPANS = 'CREATE_SPANS';
 export const CREATE_FLAG = 'CREATE_FLAG';
 export const DELETE_FLAG = 'DELETE_FLAG';
 export const CLICK_NUMBER = 'CLICK_NUMBER';
 export const CLICK_EMPTY = 'CLICK_EMPTY';
 export const GAME_OVER = 'GAME_OVER';
 export const FINISH_GAME = 'FINISH_GAME';
+export const START_TIME = 'START_TIME';
 
-export function createMine(spanArray) {
+export function createMine(spanArray, obj) {
   return {
     type: CREATE_MINE,
-    payload: spanArray
+    spanArray,
+    obj
   };
 }
 
-export function createSpans(obj) {
+export function restartGame() {
   return {
-    type: CREATE_SPANS,
-    payload: obj
+    type: RESTART_GAME,
+    // payload: obj
   };
 }
 
@@ -61,6 +64,12 @@ export function gameOver(id) {
 export function finishGame() {
   return {
     type: FINISH_GAME,
+  };
+}
+
+export function startTime() {
+  return {
+    type: START_TIME,
   };
 }
 
