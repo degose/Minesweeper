@@ -1,7 +1,7 @@
 // action type 정의
 export const CREATE_MINE = 'CREATE_MINE';
 export const RESTART_GAME = 'RESTART_GAME';
-// export const CREATE_SPANS = 'CREATE_SPANS';
+export const DELETE_FIRST = 'DELETE_FIRST';
 export const CREATE_FLAG = 'CREATE_FLAG';
 export const DELETE_FLAG = 'DELETE_FLAG';
 export const CLICK_NUMBER = 'CLICK_NUMBER';
@@ -21,7 +21,6 @@ export function createMine(spanArray, obj) {
 export function restartGame() {
   return {
     type: RESTART_GAME,
-    // payload: obj
   };
 }
 
@@ -35,6 +34,13 @@ export function createFlag(id) {
 export function deleteFlag(id) {
   return {
     type: DELETE_FLAG,
+    id
+  };
+}
+
+export function deleteFirst(id) {
+  return {
+    type: DELETE_FIRST,
     id
   };
 }

@@ -24,7 +24,7 @@ export function setRandomMines() {
       obj[i + '' + j] = {
         text: '',
         classList: 'box first',
-        // isFirst: true,
+        isFirst: true,
       }
     }
   }

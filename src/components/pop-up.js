@@ -8,7 +8,10 @@ const PopUp = ({popupText, handleCreateMines, handleRestartGame}) => {
   if (popupText !== '') {
     popUpContainer = 
     <div className="popup-container">
-      <a onClick={() => {handleCreateMines(); handleRestartGame();}}>
+      <a onClick={() => {
+        handleCreateMines(); 
+        // handleRestartGame();
+        }}>
         {popupText}
       </a>
     </div>
