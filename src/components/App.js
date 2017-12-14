@@ -23,7 +23,6 @@ class App extends Component {
           <GameHeader 
             time={this.props.time} 
             mines={this.props.mines} 
-            opened={this.props.opened} 
             handleRestartGame={this.props.handleRestartGame}
           />
           <GameArea />
@@ -41,7 +40,6 @@ class App extends Component {
 App.propTypes = {
   time: PropTypes.number,
   mines: PropTypes.number,
-  opened: PropTypes.number,
   popupText: PropTypes.string,
   handleCreateMines: PropTypes.func,
   handleRestartGame: PropTypes.func,
@@ -50,7 +48,6 @@ App.propTypes = {
 App.defaultProps = {
   time: 0,
   mines: 10,
-  opened: 0,
   popupText: '',
   handleCreateMines: () => console.warn('handleCreateMines not defined'),
   handleRestartGame: () => console.warn('handleRestartGame not defined')
@@ -60,7 +57,6 @@ const mapStateToProps = (state) => {
   return {
     time: state.Span.time,
     mines: state.Span.mines,
-    opened: state.Span.opened,
     popupText: state.Span.popupText,
   };
 };
