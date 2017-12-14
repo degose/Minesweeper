@@ -5,11 +5,9 @@ const GameHeader = ({time, mines, opened, handleRestartGame}) => {
   return (    
     <div>
       <p>남은 지뢰 : {mines}</p>
-      {/* <p>열린 갯수 : {opened}</p> */}
+      <p>열린 갯수 : {opened}</p>
       <p>Time : {time}</p>
-      <button type="button" onClick={() => {
-        handleRestartGame();
-        }}>다시 시작하기</button>
+      <button type="button" onClick={() => {handleRestartGame();}}>다시 시작하기</button>
     </div>
   )
 }

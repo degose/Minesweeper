@@ -16,27 +16,27 @@ class GameArea extends Component {
   }
 
   // 빈 span 클릭시 확장
-  expansionSpan(row,col){
-    let id = row + '' + col;
-
+  expansionSpan(key){
+    let row = parseInt(key[0], 10);
+    let col = parseInt(key[1], 10);
     let copyObj = Object.assign({},this.props.spans);
     let copyOpened = 0;
 
-    if(copyObj[id].isFirst === true) {
-      copyObj[id].isFirst = false;
+    if(copyObj[key].isFirst === true && this.props.isStopGame === false) {
+      copyObj[key].isFirst = false;
 
-      if(copyObj[id].isState > 0) {
-        copyObj[id].text = copyObj[id].isState;
+      if(copyObj[key].isState > 0) {
+        copyObj[key].text = copyObj[key].isState;
         copyOpened++;
       }
-      else if (copyObj[id].isState === 0) {
-        copyObj[id].classList = 'box opened';
+      else if (copyObj[key].isState === 0) {
+        copyObj[key].classList = 'box opened';
         copyOpened++;
         for(let ii=-1; ii<=1; ii++){
           for(let jj=-1; jj<=1; jj++){
             if(ii!==0 || jj!==0){
               if(spanValue(row+ii,col+jj) !== 9 && spanValue(row+ii,col+jj) !== 'unValue'){
-                this.expansionSpan(row+ii,col+jj);
+                this.expansionSpan(`${row+ii}${col+jj}`);
               }
             }
           }
@@ -51,15 +51,17 @@ class GameArea extends Component {
   }
 
   // flag toggle
-  handleFlag(e) {
-    let id = e.target.id;
-    
-    if (this.props.spans[id].text === '') {
-      this.props.handleCreateFlag(id);
+  handleFlag(key) {
+
+    if(this.props.isStopGame === false) {
+      if (this.props.spans[key].text === '') {
+        this.props.handleCreateFlag(key);
+      }
+      else if (this.props.spans[key].text === '⚑') {
+        this.props.handleDeleteFlag(key);
+      }
     }
-    else if (this.props.spans[id].text === '⚑') {
-      this.props.handleDeleteFlag(id);
-    }
+  
   }
 
   startGameTime() {
@@ -76,28 +78,25 @@ class GameArea extends Component {
   }
 
   // click box
-  handleBox(e) {
-    let id = e.target.id;
-    let dataRow = parseInt(id[0], 10);
-    let dataCol = parseInt(id[1], 10);
+  handleBox(key) {
 
     // time 숫자 - 시작 첫 span을 눌렀을 때만 실행되야 하기 때문에 조건문
-    if(this.props.opened === 0){
+    if(this.props.opened === 0 && this.props.isStopGame === false){
       this.startGameTime();
     }
 
-    if(this.props.spans[id].text !== '⚑' && this.props.spans[id].isFirst === true) {
+    if(this.props.spans[key].text !== '⚑' && this.props.spans[key].isFirst === true && this.props.isStopGame === false) {
 
-      if(this.props.spans[id].isState === 0) {
-        this.expansionSpan(dataRow, dataCol);
+      if(this.props.spans[key].isState === 0) {
+        this.expansionSpan(key);
       }
 
-      if(this.props.spans[id].isState > 0 && this.props.spans[id].isState < 9) {
-        this.props.handleClickNumber(id,this.props.spans[id].isState);
+      if(this.props.spans[key].isState > 0 && this.props.spans[key].isState < 9) {
+        this.props.handleClickNumber(key,this.props.spans[key].isState);
       }
 
-      if(this.props.spans[id].isState === 9) {
-        this.props.handleGameOver(id);
+      if(this.props.spans[key].isState === 9) {
+        this.props.handleGameOver(key);
       }
     }
 
@@ -107,22 +106,20 @@ class GameArea extends Component {
   }
 
   renderList() {
-    // console.log('spanArray', this.props.spanArray);
-    // console.log('this.props.spans', this.props.spans);
-    let arrays = this.props.spanArray;
-    return arrays.map((row, rowIndex) => row.map((random, colIndex) => {
+    let arrays = Object.keys(this.props.spans).sort((a,b) => parseInt(a, 10) - parseInt(b, 10));
+    return arrays.map((key) => {
       return (
         <span 
-          id={`${rowIndex}${colIndex}`} 
-          className={this.props.spans[`${rowIndex}${colIndex}`].classList}
-          key={`${rowIndex}${colIndex}`} 
-          onClick={(event) => {event.preventDefault(); this.handleBox(event);}}
-          onContextMenu={(event) => {event.preventDefault(); this.handleFlag(event);}}
+          id={key} 
+          className={this.props.spans[key].classList}
+          key={key} 
+          onClick={() => {this.handleBox(key);}}
+          onContextMenu={(event) => {event.preventDefault(); this.handleFlag(key);}}
           >
-          {this.props.spans[`${rowIndex}${colIndex}`].text}
+          {this.props.spans[key].text}
         </span>
       );
-    }))
+    })
   }
 
   render(){
@@ -137,7 +134,6 @@ class GameArea extends Component {
 GameArea.propTypes = {
   opened: PropTypes.number,
   spans: PropTypes.object,
-  spanArray: PropTypes.array,
   isStopGame: PropTypes.bool,
   handleCreateFlag: PropTypes.func,
   handleDeleteFlag: PropTypes.func,
@@ -152,7 +148,6 @@ GameArea.propTypes = {
 GameArea.defaultProps = {
   opened: 0,
   spans: {},
-  spanArray: [],
   isStopGame: false,
   handleCreateFlag: () => console.warn('handleCreateFlag not defined'),
   handleDeleteFlag: () => console.warn('handleDeleteFlag not defined'),
@@ -168,7 +163,6 @@ const mapStateToProps = (state) => {
   return {
     opened: state.Span.opened,
     spans: state.Span.spans,
-    spanArray: state.Span.spanArray,
     isStopGame: state.Span.isStopGame,
   };
 };

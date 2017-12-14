@@ -63,8 +63,8 @@ const mapStateToProps = (state) => {
 const mapDispatchProps = (dispatch) => {
   return {
     handleCreateMines: () => { 
-      const spanArrays = setRandomMines();
-      dispatch(actions.createMine(spanArrays.array, spanArrays.obj));
+      const spanObj = setRandomMines();
+      dispatch(actions.createMine(spanObj));
     },
     handleRestartGame: () => { dispatch(actions.restartGame());},
   };

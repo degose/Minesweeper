@@ -3,7 +3,6 @@ import update from 'react-addons-update';
 
 const initialState = {
   spans : {},
-  spanArray: [],
   opened: 0,
   popupText: '',
   mines: 10,
@@ -17,7 +16,6 @@ export default function stateSpan(state = initialState, action) {
     // 랜덤 위치에 지뢰를 위치시키고, 그 주변의 숫자값을 배열로 만들고, 각 spans의 obj 만들기
     case actions.CREATE_MINE:
       return update(state, {
-        'spanArray': {$set: action.spanArray},
         'spans': {$set: action.obj},
         'popupText': {$set: ''},
         'opened': {$set: 0},
