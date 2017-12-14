@@ -1,16 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const PopUp = ({popupText, handleCreateMines, handleRestartGame}) => {
+const PopUp = ({popupText, handleCreateMines}) => {
   let popUpContainer = null;
 
   // popUpText가 있어야 보여지게 하기
   if (popupText !== '') {
     popUpContainer = 
     <div className="popup-container">
-      <a onClick={() => {
-        handleCreateMines(); 
-        }}>
+      <a onClick={(event) => {event.preventDefault(); handleCreateMines(); }}>
         {popupText}
       </a>
     </div>

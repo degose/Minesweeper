@@ -78,7 +78,6 @@ export default function stateSpan(state = initialState, action) {
     
     // 빈곳(0)을 눌렀을 때 -> 확장
     case actions.CLICK_EMPTY:
-      // console.log('리듀서',action.id)
       return update(state, {
         'spans': {
           [action.id]: {

@@ -55,3 +55,7 @@ h1{
   line-height: 50px;
   cursor: pointer;
 }
+
+table {
+  text-align: center;
+}

@@ -86,7 +86,7 @@ class GameArea extends Component {
       this.startGameTime();
     }
 
-    if(this.props.spans[id].text !== '⚑') {
+    if(this.props.spans[id].text !== '⚑' && this.props.spans[id].isFirst === true) {
 
       if(this.props.spans[id].isState === 0) {
         this.expansionSpan(dataRow, dataCol);
@@ -107,7 +107,7 @@ class GameArea extends Component {
   }
 
   renderList() {
-    console.log('spanArray', this.props.spanArray);
+    // console.log('spanArray', this.props.spanArray);
     // console.log('this.props.spans', this.props.spans);
     let arrays = this.props.spanArray;
     return arrays.map((row, rowIndex) => row.map((random, colIndex) => {

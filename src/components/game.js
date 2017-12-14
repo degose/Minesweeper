@@ -10,17 +10,25 @@ import PopUp from './pop-up';
 
 class Game extends Component {
   componentWillMount() {
-    this.props.handleCreateMines(); 
-    // this.props.handleCreateSpans(); 
+    this.props.handleCreateMines();
   }
 
   render(){
     return (
-      <section>
-        <GameHeader time={this.props.time} mines={this.props.mines} opened={this.props.opened} handleCreateMines={this.props.handleCreateMines} handleRestartGame={this.props.handleRestartGame}/>
+      <div>
+        <GameHeader 
+          time={this.props.time} 
+          mines={this.props.mines} 
+          opened={this.props.opened} 
+          handleRestartGame={this.props.handleRestartGame}
+        />
         <GameArea />
-        <PopUp popupText={this.props.popupText} handleCreateMines={this.props.handleCreateMines} handleRestartGame={this.props.handleRestartGame}/>
-      </section>
+        <PopUp 
+          time={this.props.time}
+          popupText={this.props.popupText} 
+          handleCreateMines={this.props.handleCreateMines} 
+        />
+      </div>
     )
   }
 }
@@ -48,7 +56,7 @@ const mapStateToProps = (state) => {
     time: state.Span.time,
     mines: state.Span.mines,
     opened: state.Span.opened,
-    popupText: state.Span.popupText
+    popupText: state.Span.popupText,
   };
 };
 
