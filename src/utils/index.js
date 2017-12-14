@@ -23,8 +23,9 @@ export function setRandomMines() {
       array[i].push(0);
       obj[i + '' + j] = {
         text: '',
-        classList: 'box first',
+        classList: 'box',
         isFirst: true,
+        isState: 0
       }
     }
   }
@@ -39,6 +40,7 @@ export function setRandomMines() {
     if(array[randomRow][randomCol] === 0){
       // 숫자 9는 mines인지 아닌지를 판별하기 위한 숫자
       array[randomRow][randomCol] = 9;
+      obj[randomRow + '' + randomCol].isState = 9;
       placedMines++;
     }
   }
@@ -54,6 +56,7 @@ export function setRandomMines() {
             if(ii!==0 || jj!==0){
               if(spanValue(i+ii,j+jj) !== 9 && spanValue(i+ii,j+jj) !== 'unValue'){
                 array[i+ii][j+jj]++;
+                obj[(i+ii) + '' + (j+jj)].isState++;
               }
             }
           }
@@ -64,3 +67,4 @@ export function setRandomMines() {
 
   return {array, obj};
 }
+

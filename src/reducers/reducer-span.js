@@ -29,6 +29,12 @@ export default function stateSpan(state = initialState, action) {
         // 'isFirstTime': {$set: true},
       })
 
+    // update spans
+    case actions.UPDATE_SPANS:
+      return update(state, {
+        'spans': {$set: action.obj},
+      })
+
     // 다시 시작 시 popuptext 
     case actions.RESTART_GAME:
       return update(state, {
@@ -40,7 +46,12 @@ export default function stateSpan(state = initialState, action) {
     case actions.CREATE_FLAG:
       return update(state, {
         'spans': {
-          [action.id]: {$set: {text: '⚑', classList: 'box', isFirst: false}}
+          [action.id]: {
+            text: {$set: '⚑'},
+            // classList: {$set: 'box'},
+            isFirst: {$set: false},
+            // $set: {text: '⚑', classList: 'box', isFirst: false}
+          }
         },
         'mines': {$set: --state.mines},
       })
@@ -49,14 +60,19 @@ export default function stateSpan(state = initialState, action) {
     case actions.DELETE_FLAG:
       return update(state, {
         'spans': {
-          [action.id]: {$set: {text: '', classList: 'box first', isFirst: true}}
+          [action.id]: {
+            text: {$set: ''},
+            // classList: {$set: 'box'},
+            isFirst: {$set: true},
+            // $set: {text: '', classList: 'box first', isFirst: true}
+          }
         },
         'mines': {$set: ++state.mines}
       })
 
     // 첫번째상태 삭제
     case actions.DELETE_FIRST:
-    console.log('리듀서까지왔니')
+    console.log('리듀서까지왔니', action.id)
       return update(state, {
         'spans': {
           [action.id]: {
@@ -71,17 +87,27 @@ export default function stateSpan(state = initialState, action) {
     case actions.CLICK_NUMBER:
       return update(state, {
         'spans': {
-          [action.id]: {$set: {text: action.num, classList: 'box', isFirst: false}}
+          [action.id]: {
+            text: {$set: action.num},
+            // classList: {$set: 'box'},
+            isFirst: {$set: false},
+            // $set: {text: action.num, classList: 'box', isFirst: false}
+          }
         },
         'opened': {$set: ++state.opened},
       })
     
     // 빈곳(0)을 눌렀을 때 -> 확장
     case actions.CLICK_EMPTY:
-      console.log('리듀서',action.id)
+      // console.log('리듀서',action.id)
       return update(state, {
         'spans': {
-          [action.id]: {$set: {classList: 'box opened', isFirst: false}},
+          [action.id]: {
+            text: {$set: ''},
+            classList: {$set: 'box opened'},
+            isFirst: {$set: false},
+            // $set: {classList: 'box opened', isFirst: false}
+          },
         },
         'opened': {$set: ++state.opened},
       })
@@ -90,7 +116,12 @@ export default function stateSpan(state = initialState, action) {
     case actions.GAME_OVER:
       return update(state, {
         'spans': {
-          [action.id]: {$set: {text: '⊗', classList: 'box', isFirst: false}},
+          [action.id]: {
+            text: {$set: '⊗'},
+            classList: {$set: 'box'},
+            isFirst: {$set: false},
+            // $set: {text: '⊗', classList: 'box', isFirst: false}
+          },
         },
         'popupText': {$set: '지뢰 발견! 다시 시작하기'},
         'mines': {$set: --state.mines},

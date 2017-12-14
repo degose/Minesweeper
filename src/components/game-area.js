@@ -8,118 +8,55 @@ class GameArea extends Component {
   constructor(props) {
     super(props);
 
+    this.state = {
+      
+    }
     this.handleFlag = this.handleFlag.bind(this);
     this.handleBox = this.handleBox.bind(this);
     this.expansionSpan = this.expansionSpan.bind(this);
     this.startGameTime = this.startGameTime.bind(this);
     this.renderList = this.renderList.bind(this);
   }
-  
-  componentDidUpdate(prevProps) {
-    // console.log('this.propst', this.props)
-    // console.log('nextProps', nextProps.clickId)
-    // console.log('clickId', this.props.clickId)
-    // console.log('1',this.props.spans[nextProps.clickId],nextProps.spans[nextProps.clickId] )
-    // console.log('1',this.props.spans[this.props.clickId])
-    // console.log('2', prevProps.spans[this.props.clickId] )
-    console.log('3',this.props.spans[this.props.clickId] !== prevProps.spans[this.props.clickId] )
-    if (this.props.spans[this.props.clickId].isFirst !== prevProps.spans[this.props.clickId].isFirst){
-      // console.log('여기')
-      this.addFunction(this.props.clickId);
-    }
-    return true;
-  }
 
   // 빈 span 클릭시 확장
   expansionSpan(row,col){
     let item = document.getElementById(`${row}${col}`);
-    console.log('item',item)
     let id = item.id;
-    let itemVal = item.dataset.val;
-    // console.log('this.props.spans[id]',this.props.spans[id]);
-    // console.log('id',id);
-    // if(this.props.spans[id].isFirst === true){
-      // this.props.handleDeleteFirst(id);
-    // }
-      // class first는 초기 생성된 span인지 아닌지 조건
-      // item.classList.remove('first');
-      console.log('확장함수1',id)
-    if(item.classList.contains('first')){
-      // class first는 초기 생성된 span인지 아닌지 조건
-      // item.classList.remove('first');
-      this.props.handleDeleteFirst(id);
-      console.log('확장함수2',id)
+    // let itemVal = item.dataset.val;
 
-      // if(this.props.spanArray[row][col] > 0){
-      //   this.props.handleClickNumber(id,itemVal);
+    let copyObj = Object.assign({},this.props.spans);
 
-      // } else {
-      //   this.props.handleClickEmpty(id);
-      // }
-      
-      // if(this.props.spanArray[row][col] === 0){
-      //   for(let ii=-1; ii<=1; ii++){
-      //     for(let jj=-1; jj<=1; jj++){
-      //       if(ii!==0 || jj!==0){
-      //         if(spanValue(row+ii,col+jj) !== 9 && spanValue(row+ii,col+jj) !== 'unValue'){
-      //           this.expansionSpan(row+ii,col+jj);
-      //         }
-      //       }
-      //     }
-      //   }
-      // }
+    if(copyObj[id].isFirst === true) {
+      copyObj[id].isFirst = false;
 
+      if(copyObj[id].isState > 0) {
+        // copyObj[id].classList = 'box';
+        copyObj[id].text = copyObj[id].isState;
       }
-
-
-    if (this.props.opened >= 53) {
-      this.props.handleFinishGame();
-    }
-  }
-
-  addFunction(id) {
-    
-    let row = parseInt(id[0], 10);
-    let col = parseInt(id[1], 10);
-    let item = document.getElementById(`${row}${col}`);
-    // let id = item.id;
-    let itemVal = parseInt(item.dataset.val, 10);
-    
-    // console.log('id1', this.props.spans[id].isFirst);
-
-    if(this.props.spans[id].isFirst === false) {
-      console.log('id2', col, row);
-      if(this.props.spanArray[row][col] > 0){
-        console.log('id3', col, row);
-        this.props.handleClickNumber(id,itemVal);
-
-      } else {
-        console.log('id4', col, row);
-        this.props.handleClickEmpty(id);
-      }
-      // console.log('1')
-      if(this.props.spanArray[row][col] === 0){
-        // console.log('2')
+      else if (copyObj[id].isState === 0) {
+        copyObj[id].classList = 'box opened';
         for(let ii=-1; ii<=1; ii++){
           for(let jj=-1; jj<=1; jj++){
             if(ii!==0 || jj!==0){
-              // console.log('3',row+ii,col+jj,spanValue(row+ii,col+jj))
               if(spanValue(row+ii,col+jj) !== 9 && spanValue(row+ii,col+jj) !== 'unValue'){
                 this.expansionSpan(row+ii,col+jj);
-                
-                // console.log('4')
               }
             }
           }
         }
       }
     }
+        
+    this.props.handleUpdateSpnas(copyObj);
+
+    if (this.props.opened >= 53) {
+      this.props.handleFinishGame();
+    }
   }
 
   // flag toggle
   handleFlag(e) {
     let id = e.target.id;
-    this.props.handleDeleteFirst(id);
     
     if (this.props.spans[id].text === '') {
       this.props.handleCreateFlag(id);
@@ -127,7 +64,6 @@ class GameArea extends Component {
     else if (this.props.spans[id].text === '⚑') {
       this.props.handleDeleteFlag(id);
     }
-    console.log('this.props.spans[id]플래그',this.props.spans[id])
   }
 
   startGameTime() {
@@ -139,6 +75,7 @@ class GameArea extends Component {
 
       if (this.props.opened >= 53 || this.props.isStopGame === true) {
         clearInterval(interval);
+        // stop 함수 따로 빼기
         console.log('끝')
       }
     }, 1000);
@@ -150,36 +87,37 @@ class GameArea extends Component {
     let id = e.target.id;
     let dataRow = parseInt(item.dataset.row, 10);
     let dataCol = parseInt(item.dataset.col, 10);
-    let itemVal = parseInt(item.dataset.val, 10);
+    // let itemVal = parseInt(item.dataset.val, 10);
 
     // time 숫자 - 시작 첫 span을 눌렀을 때만 실행되야 하기 때문에 조건문
     if(this.props.opened === 0){
       this.startGameTime();
     }
 
-    if(this.props.spans[id].text !== '⚑' && item.classList.contains('first')) {
+    if(this.props.spans[id].text !== '⚑') {
 
-      if(itemVal === 0) {
+      if(this.props.spans[id].isState === 0) {
         this.expansionSpan(dataRow, dataCol);
       }
 
-      if(itemVal > 0 && itemVal < 9) {
-        this.props.handleClickNumber(id,itemVal);
+      if(this.props.spans[id].isState > 0 && this.props.spans[id].isState < 9) {
+        this.props.handleClickNumber(id,this.props.spans[id].isState);
       }
 
-      if(itemVal === 9) {
+      if(this.props.spans[id].isState === 9) {
         this.props.handleGameOver(id);
       }
     }
 
     if(this.props.opened >= 53) {
+      console.log('opened개수',this.props.opened)
       this.props.handleFinishGame();
     }
   }
 
   renderList() {
     console.log('spanArray', this.props.spanArray);
-    console.log('this.props.spans', this.props.spans);
+    // console.log('this.props.spans', this.props.spans);
     let spans = this.props.spanArray;
     return spans.map((row, rowIndex) => row.map((random, colIndex) => {
       return (
@@ -253,6 +191,7 @@ const mapDispatchProps = (dispatch) => {
     handleFinishGame: () => { dispatch(actions.finishGame())},
     handleStartTime: () => { dispatch(actions.startTime())},
     handleDeleteFirst: (id) => { dispatch(actions.deleteFirst(id))},
+    handleUpdateSpnas: (obj) => { dispatch(actions.updateSpans(obj))},
   };
 };
 

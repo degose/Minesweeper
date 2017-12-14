@@ -1,5 +1,6 @@
 // action type 정의
 export const CREATE_MINE = 'CREATE_MINE';
+export const UPDATE_SPANS = 'UPDATE_SPANS';
 export const RESTART_GAME = 'RESTART_GAME';
 export const DELETE_FIRST = 'DELETE_FIRST';
 export const CREATE_FLAG = 'CREATE_FLAG';
@@ -14,6 +15,13 @@ export function createMine(spanArray, obj) {
   return {
     type: CREATE_MINE,
     spanArray,
+    obj
+  };
+}
+
+export function updateSpans(obj) {
+  return {
+    type: UPDATE_SPANS,
     obj
   };
 }
