@@ -1,12 +1,10 @@
 
 let obj = {};
-let row = 8;
-let col = 8;
-let mines = 10;
 
 export function spanValue(row,col){
   
   if(obj[`${row}${col}`] === undefined){
+    // obj['-1'+'0']등과 같은 없는 값이 있을 경우 unValue  
     return 'unValue';
   } else {
     return obj[`${row}${col}`].isState;
@@ -14,6 +12,9 @@ export function spanValue(row,col){
 }
 
 export function setRandomMines() {
+  const row = 8;
+  const col = 8;
+  const mines = 10;
  
   for(let i=0; i<row; i++){
     for(let j=0; j<col; j++){
@@ -25,12 +26,11 @@ export function setRandomMines() {
       }
     }
   }
-
   
   let placedMines = 0;
   let randomRow,randomCol;
   while(placedMines < mines){
-    // 0~7까지의 랜덤 숫자
+    // 10개의 지뢰를 랜덤[row+col]에 위치
     randomRow = Math.floor(Math.random() * row);
     randomCol = Math.floor(Math.random() * col);
     if(obj[`${randomRow}${randomCol}`].isState === 0){
@@ -50,6 +50,7 @@ export function setRandomMines() {
             // -1, 0, 1
             if(ii!==0 || jj!==0){
               if(spanValue(i+ii,j+jj) !== 9 && spanValue(i+ii,j+jj) !== 'unValue'){
+                // 만약 [0,0]이면 [-1,-1],[-1,0],[-1,1],[0,-1],[0,0][0,1],[1,-1],[1,0],[1,1]
                 obj[`${i+ii}${j+jj}`].isState++;
               }
             }

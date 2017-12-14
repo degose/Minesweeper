@@ -1,39 +1,44 @@
+// export default App;
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import * as actions from '../actions';
 import { setRandomMines } from '../utils';
 import PropTypes from 'prop-types';
+import '../App.css';
 
 import GameHeader from './game-header';
 import GameArea from './game-area';
 import PopUp from './pop-up';
 
-class Game extends Component {
+class App extends Component {
   componentWillMount() {
     this.props.handleCreateMines();
   }
 
   render(){
     return (
-      <div>
-        <GameHeader 
-          time={this.props.time} 
-          mines={this.props.mines} 
-          opened={this.props.opened} 
-          handleRestartGame={this.props.handleRestartGame}
-        />
-        <GameArea />
-        <PopUp 
-          time={this.props.time}
-          popupText={this.props.popupText} 
-          handleCreateMines={this.props.handleCreateMines} 
-        />
+      <div className="App">
+        <h1>Minesweeper Project</h1>
+        <div>
+          <GameHeader 
+            time={this.props.time} 
+            mines={this.props.mines} 
+            opened={this.props.opened} 
+            handleRestartGame={this.props.handleRestartGame}
+          />
+          <GameArea />
+          <PopUp 
+            time={this.props.time}
+            popupText={this.props.popupText} 
+            handleCreateMines={this.props.handleCreateMines} 
+          />
+        </div>
       </div>
     )
   }
 }
 
-Game.propTypes = {
+App.propTypes = {
   time: PropTypes.number,
   mines: PropTypes.number,
   opened: PropTypes.number,
@@ -42,7 +47,7 @@ Game.propTypes = {
   handleRestartGame: PropTypes.func,
 };
 
-Game.defaultProps = {
+App.defaultProps = {
   time: 0,
   mines: 10,
   opened: 0,
@@ -70,4 +75,4 @@ const mapDispatchProps = (dispatch) => {
   };
 };
 
-export default connect(mapStateToProps, mapDispatchProps)(Game);
+export default connect(mapStateToProps, mapDispatchProps)(App);

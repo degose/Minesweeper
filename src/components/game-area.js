@@ -19,19 +19,26 @@ class GameArea extends Component {
   expansionSpan(key){
     let row = parseInt(key[0], 10);
     let col = parseInt(key[1], 10);
+
+    // 재귀함수 스텍이슈로 store의 state값을 그때그때 받아오지 못하므로 
+    // store의 값을 복사하여 처리한 후에 다시 dispatch 처리
     let copyObj = Object.assign({},this.props.spans);
     let copyOpened = 0;
 
     if(copyObj[key].isFirst === true && this.props.isStopGame === false) {
       copyObj[key].isFirst = false;
 
+      // span의 상태가 숫자일 때
       if(copyObj[key].isState > 0) {
         copyObj[key].text = copyObj[key].isState;
         copyOpened++;
       }
+
+      // span의 상태가 빈 값(0)일 때
       else if (copyObj[key].isState === 0) {
         copyObj[key].classList = 'box opened';
         copyOpened++;
+
         for(let ii=-1; ii<=1; ii++){
           for(let jj=-1; jj<=1; jj++){
             if(ii!==0 || jj!==0){
@@ -50,7 +57,7 @@ class GameArea extends Component {
     }
   }
 
-  // flag toggle
+  // 깃발 toggle
   handleFlag(key) {
 
     if(this.props.isStopGame === false) {
@@ -64,6 +71,7 @@ class GameArea extends Component {
   
   }
 
+  // 타임 시작
   startGameTime() {
     this.props.handleStartTime();
 
@@ -77,7 +85,7 @@ class GameArea extends Component {
     }, 1000);
   }
 
-  // click box
+  // span을 클릭했을 때 처리
   handleBox(key) {
 
     // time 숫자 - 시작 첫 span을 눌렀을 때만 실행되야 하기 때문에 조건문
@@ -87,25 +95,30 @@ class GameArea extends Component {
 
     if(this.props.spans[key].text !== '⚑' && this.props.spans[key].isFirst === true && this.props.isStopGame === false) {
 
+      // span의 상태가 빈 값(0)일 때
       if(this.props.spans[key].isState === 0) {
         this.expansionSpan(key);
       }
 
+      // span의 상태가 숫자일 때
       if(this.props.spans[key].isState > 0 && this.props.spans[key].isState < 9) {
         this.props.handleClickNumber(key,this.props.spans[key].isState);
       }
 
+      // span의 상태가 지뢰(9)일 때
       if(this.props.spans[key].isState === 9) {
         this.props.handleGameOver(key);
       }
     }
 
+    // 열린 span의 개수가 53개일 때 (8*8-10=54이지만 ++opened를 해줬으므로 -1)
     if(this.props.opened >= 53) {
       this.props.handleFinishGame();
     }
   }
 
   renderList() {
+    // Object의 key값을 array로 만든 후 00~ 순서로 정렬
     let arrays = Object.keys(this.props.spans).sort((a,b) => parseInt(a, 10) - parseInt(b, 10));
     return arrays.map((key) => {
       return (
