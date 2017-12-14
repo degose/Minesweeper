@@ -8,7 +8,6 @@ const GameHeader = ({time, mines, opened, handleCreateMines, handleRestartGame})
       <p>열린 갯수 : {opened}</p>
       <p>타이머 : {time}</p>
       <button type="button" onClick={() => {
-        // handleCreateMines(); 
         handleRestartGame();
         }}>다시 시작하기</button>
     </div>
@@ -18,14 +17,12 @@ const GameHeader = ({time, mines, opened, handleCreateMines, handleRestartGame})
 GameHeader.propTypes = {
   mines: PropTypes.number,
   opened: PropTypes.number,
-  handleCreateMines: PropTypes.func,
   handleRestartGame: PropTypes.func,
 };
 
 GameHeader.defaultProps = {
   mines: 10,
   opened: 0,
-  handleCreateMines: () => console.warn('handleCreateMines not defined'),
   handleRestartGame: () => console.warn('handleRestartGame not defined')
 };
 

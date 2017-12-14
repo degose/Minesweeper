@@ -9,8 +9,6 @@ const initialState = {
   mines: 10,
   time: 0,
   isStopGame: false,
-  clickId: null
-  // isFirstTime: true,
 };
 
 export default function stateSpan(state = initialState, action) {
@@ -26,13 +24,13 @@ export default function stateSpan(state = initialState, action) {
         'mines': {$set: 10},
         'time': {$set: 0},
         'isStopGame': {$set: false},
-        // 'isFirstTime': {$set: true},
       })
 
     // update spans
     case actions.UPDATE_SPANS:
       return update(state, {
         'spans': {$set: action.obj},
+        'opened': {$set: state.opened + action.num},
       })
 
     // 다시 시작 시 popuptext 
@@ -48,9 +46,7 @@ export default function stateSpan(state = initialState, action) {
         'spans': {
           [action.id]: {
             text: {$set: '⚑'},
-            // classList: {$set: 'box'},
             isFirst: {$set: false},
-            // $set: {text: '⚑', classList: 'box', isFirst: false}
           }
         },
         'mines': {$set: --state.mines},
@@ -62,25 +58,10 @@ export default function stateSpan(state = initialState, action) {
         'spans': {
           [action.id]: {
             text: {$set: ''},
-            // classList: {$set: 'box'},
             isFirst: {$set: true},
-            // $set: {text: '', classList: 'box first', isFirst: true}
           }
         },
         'mines': {$set: ++state.mines}
-      })
-
-    // 첫번째상태 삭제
-    case actions.DELETE_FIRST:
-    console.log('리듀서까지왔니', action.id)
-      return update(state, {
-        'spans': {
-          [action.id]: {
-            isFirst: {$set: false}
-            // {$set: {...state.spans[action.id],isFirst: false}}
-          }
-        },
-        'clickId': {$set: action.id}
       })
 
     // 숫자를 눌렀을 때 -> 숫자 표시
@@ -89,9 +70,7 @@ export default function stateSpan(state = initialState, action) {
         'spans': {
           [action.id]: {
             text: {$set: action.num},
-            // classList: {$set: 'box'},
             isFirst: {$set: false},
-            // $set: {text: action.num, classList: 'box', isFirst: false}
           }
         },
         'opened': {$set: ++state.opened},
@@ -106,7 +85,6 @@ export default function stateSpan(state = initialState, action) {
             text: {$set: ''},
             classList: {$set: 'box opened'},
             isFirst: {$set: false},
-            // $set: {classList: 'box opened', isFirst: false}
           },
         },
         'opened': {$set: ++state.opened},
@@ -120,7 +98,6 @@ export default function stateSpan(state = initialState, action) {
             text: {$set: '⊗'},
             classList: {$set: 'box'},
             isFirst: {$set: false},
-            // $set: {text: '⊗', classList: 'box', isFirst: false}
           },
         },
         'popupText': {$set: '지뢰 발견! 다시 시작하기'},
@@ -138,7 +115,6 @@ export default function stateSpan(state = initialState, action) {
     // 처음 span을 클릭한 순간 타임 시작
     case actions.START_TIME:
       return update(state, {
-        // 'isFirstTime': {$set: false},
         'time': {$set: ++state.time},
       })
 

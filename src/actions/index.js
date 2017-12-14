@@ -19,10 +19,11 @@ export function createMine(spanArray, obj) {
   };
 }
 
-export function updateSpans(obj) {
+export function updateSpans(obj,num) {
   return {
     type: UPDATE_SPANS,
-    obj
+    obj,
+    num
   };
 }
 
@@ -42,13 +43,6 @@ export function createFlag(id) {
 export function deleteFlag(id) {
   return {
     type: DELETE_FLAG,
-    id
-  };
-}
-
-export function deleteFirst(id) {
-  return {
-    type: DELETE_FIRST,
     id
   };
 }
