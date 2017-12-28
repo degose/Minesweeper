@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import Span from './reducer-span';
+import Box from './reducer-box';
 
 const rootReducer = combineReducers({
-  Span
+  Box
 });
 
 export default rootReducer;

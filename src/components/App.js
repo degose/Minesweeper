@@ -55,17 +55,17 @@ App.defaultProps = {
 
 const mapStateToProps = (state) => {
   return {
-    time: state.Span.time,
-    mines: state.Span.mines,
-    popupText: state.Span.popupText,
+    time: state.Box.time,
+    mines: state.Box.mines,
+    popupText: state.Box.popupText,
   };
 };
 
 const mapDispatchProps = (dispatch) => {
   return {
     handleCreateMines: () => { 
-      const spanObj = setRandomMines();
-      dispatch(actions.createMine(spanObj));
+      const boxObj = setRandomMines();
+      dispatch(actions.createMine(boxObj));
     },
     handleRestartGame: () => { dispatch(actions.restartGame());},
   };

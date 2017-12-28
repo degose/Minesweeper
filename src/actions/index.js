@@ -1,6 +1,6 @@
 // action type 정의
 export const CREATE_MINE = 'CREATE_MINE';
-export const UPDATE_SPANS = 'UPDATE_SPANS';
+export const UPDATE_BOX = 'UPDATE_BOX';
 export const RESTART_GAME = 'RESTART_GAME';
 export const DELETE_FIRST = 'DELETE_FIRST';
 export const CREATE_FLAG = 'CREATE_FLAG';
@@ -20,9 +20,9 @@ export function createMine(obj) {
 }
 
 // 빈 곳(0)을 눌렀을 때 함수 컴포넌트 안에서 처리된 obj와 더해진 opened를 받아서 리듀서로 보낸다.
-export function updateSpans(obj,num) {
+export function updateBox(obj,num) {
   return {
-    type: UPDATE_SPANS,
+    type: UPDATE_BOX,
     obj,
     num
   };

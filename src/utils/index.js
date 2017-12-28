@@ -2,7 +2,7 @@
 
 let obj = {};
 
-export function spanValue(row,col){
+export function boxValue(row,col){
   
   if(obj[`${row}${col}`] === undefined){
     // obj['-1'+'0']등과 같은 없는 값이 있을 경우 unValue  
@@ -45,12 +45,12 @@ export function setRandomMines() {
   for(let i=0; i < row; i++){
     for(let j=0; j< col; j++){
       if(obj[`${i}${j}`].isState === 9){
-        // 만약 spanArray에 mines가 있으면
+        // 만약 boxArray에 mines가 있으면
         for(let ii=-1; ii<=1; ii++){
           for(let jj=-1; jj<=1; jj++){
             // -1, 0, 1
             if(ii!==0 || jj!==0){
-              if(spanValue(i+ii,j+jj) !== 9 && spanValue(i+ii,j+jj) !== 'unValue'){
+              if(boxValue(i+ii,j+jj) !== 9 && boxValue(i+ii,j+jj) !== 'unValue'){
                 // 만약 [0,0]이면 [-1,-1],[-1,0],[-1,1],[0,-1],[0,0][0,1],[1,-1],[1,0],[1,1]
                 obj[`${i+ii}${j+jj}`].isState++;
               }
